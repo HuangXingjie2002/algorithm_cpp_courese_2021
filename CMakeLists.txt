@@ -12,4 +12,4 @@ add_executable(algorithm_cpp_courese_2021
         wheel/lib/stack_list.h
         wheel/src/queue_array.cpp
         wheel/src/stack_array.cpp
-        wheel/src/stack_list.cpp)
+        wheel/src/stack_list.cpp wheel/lib/queue_list.h wheel/src/queue_list.cpp)
