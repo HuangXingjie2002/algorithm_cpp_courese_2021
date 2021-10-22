@@ -35,6 +35,7 @@ bool queue_list<T>::enQueue(T e) {
         buffer->value = e;
         this->rear->next = buffer; // 连接
         this->rear = buffer;
+        this->size ++; // 队列大小
         return true;
     } else {
         std::cout << "内存分配失败" << std::endl;
@@ -50,6 +51,7 @@ T queue_list<T>::deQueue() {
         buffer = this->front->next->value;
         Node<T> *tamp = this->front;
         this->front = this->front->next; // 指向下一个
+        this->size --; // 大小票减少
         delete tamp; // 释放掉 tamp
     } else {
         std::cout << "队列为空无法弹出" << std::endl;
