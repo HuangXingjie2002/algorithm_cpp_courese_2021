@@ -21,6 +21,15 @@ bool isPalindrom(std::string str)
             return false;
         }
     }
+
+    /*
+     *
+     * 或者直接
+     * string buffer = a;
+     * reverse(a.begin(), a.end())
+     * return buffer == a;
+     * 如果翻转之后仍然是相同的便是回文
+     * */
     return true;
 }
 
