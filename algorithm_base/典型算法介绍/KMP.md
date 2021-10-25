@@ -63,22 +63,22 @@
 那么返回真。
 
 ```c++
-int kmp(const std::string &templateStr, const std::string &value) {
-        int *next = find_next(value);
-        int index = 0;
-        for (int i = 0; i < templateStr.length() - value.length() + 1; i++) {
-            if (value[index] != templateStr[i] && index == 0) {
-                continue;
-            } else if (value[index] != templateStr[i]) {
-                index = next[index];
-            } else {
-                index ++;
-            }
-            if (index == value.length() - 1)
-            {
-                return true;
-            }
-        }
-        return false;
+static int kmp(const std::string &templateStr, const std::string &value) {
+    int *next = find_next(value);
+    int index = 0;
+    for (int i = 0; i < templateStr.length() - value.length() + 1; i++) {
+    if (value[index] != templateStr[i] && index == 0) {
+        continue;
+    } else if (value[index] != templateStr[i]) {
+        index = next[index];
+    } else {
+        index ++;
     }
+    if (index == value.length() - 1)
+    {
+        return true;
+    }
+    }
+    return false;
+}
 ```
