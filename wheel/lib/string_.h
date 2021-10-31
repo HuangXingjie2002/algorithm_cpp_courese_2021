@@ -1,8 +1,5 @@
 #pragma once
 
-#include <iostream>
-
-
 class String_methods {
 public:
     static int *find_next(std::string str) {
@@ -35,10 +32,9 @@ public:
             } else if (value[index] != templateStr[i]) {
                 index = next[index];
             } else {
-                index ++;
+                index++;
             }
-            if (index == value.length() - 1)
-            {
+            if (index == value.length() - 1) {
                 return true;
             }
         }
@@ -46,8 +42,65 @@ public:
     }
 };
 
+/**
+bool  replace(const int index,  const char c);         //
+bool  replace(const int index, const int length,  const char * const substr);    //用字符串 substr 替换从index开始的length个字符
+bool replace(const string &surSubstr, const string &newStr) //用newStr 替换子串surSubstr
+bool remove(const char ch);    //删除字符串中的所有字符ch，
+bool remove(const int index);  //删除指定位置的字符
+bool remove(const int index, const int count);   //删除指定位置的开始指定数量的字符。
+bool remove(const char *substr);    //查找并删除当前字符串中的子串;
+ */
 
-#ifndef STRING_CPP
-#define STRING_CPP
+
+class String {
+private:
+    char *data;
+    int length;
+
+
+public:
+
+    static int len(const char *str) {
+        int count = 0;
+        while (*(str++) != '\0')
+        {
+            count ++;
+        }
+        return count;
+    }
+
+    // 初始化一个string
+    String();
+
+    String(const char *str);
+
+    // 无参构造器
+    bool setData(const char *str);
+
+    // 设置字符串
+    const char *substring(int left, int right);
+
+    // 从left 到 right 的子串
+    String &Union(const char *str);
+
+    int isSubstr(const char * str);
+
+    char * getData() {
+        return this->data;
+    }
+
+    // 拼接当前字符串和str字符串
+    bool replace(const int index, const char c);         //
+    bool replace(const int index, const int length, const char *const substr);    //用字符串 substr 替换从index开始的length个字符
+    bool replace(const String &surSubstr, const String &newStr); //用newStr 替换子串surSubstr
+    bool remove(const char ch);    //删除字符串中的所有字符ch，
+    bool remove(const int index);  //删除指定位置的字符
+    bool remove(const int index, const int count);   //删除指定位置的开始指定数量的字符。
+    bool remove(const char *substr);    //查找并删除当前字符串中的子串;
+};
+
+#ifndef __STRING_CPP
+#define __STRING_CPP
 #include "../src/string_.cpp"
 #endif
