@@ -1,0 +1,14 @@
+//
+// Created by mushr on 2021/11/1.
+//
+
+#ifndef ALGORITHM_CPP_COURESE_2021_LINKLISTREL_H
+#define ALGORITHM_CPP_COURESE_2021_LINKLISTREL_H
+
+
+class linklistRel {
+
+};
+
+
+#endif //ALGORITHM_CPP_COURESE_2021_LINKLISTREL_H

@@ -49,7 +49,7 @@ template <typename T>
 T queue_array<T>::deQueue()
 {
     this->front = (this->front + 1) % this->size;
-    return this->array[this->front]; // 返回front下一个元素， 也就是说当前的this->front 不算元素，已经被返回了
+    return this->array[this->front]; // 返回front下一个元素， 也就是说当前的this->head 不算元素，已经被返回了
 }
 
 template <typename T>
