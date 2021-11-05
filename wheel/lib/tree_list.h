@@ -14,7 +14,7 @@ public:
 
 
 template<typename T>
-class binear_tree {
+class tree_list {
 private:
     int size; // 当前树的节点数目
     int depth; // 当前树的深度
@@ -22,11 +22,11 @@ private:
     Node<T> *root;
 
 public:
-    binear_tree();
+    tree_list();
 };
 
 
-#ifndef BINEAR_TREE_CPP
-#define BINEAR_TREE_CPP
+#ifndef TREE_LIST_CPP
+#define TREE_LIST_CPP
 #include "../src/binear_tree.cpp"
 #endif

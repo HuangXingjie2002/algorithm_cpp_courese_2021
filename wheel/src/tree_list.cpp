@@ -3,15 +3,15 @@
 //
 
 #include <iostream>
-#ifndef BINEAR_TREE_CPP
-#define BINEAR_TREE_CPP
-#include "../lib/binear_tree.h"
+#ifndef TREE_LIST_CPP
+#define TREE_LIST_CPP
+#include "../lib/tree_list.h"
 #endif
 
 
 
 template <typename T>
-binear_tree<T>::binear_tree() {
+tree_list<T>::tree_list() {
     this->size = 0;
     this->degree = 0;
     this->depth = 0;
