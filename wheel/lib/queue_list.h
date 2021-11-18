@@ -3,13 +3,17 @@
 //
 #pragma once
 
+#ifndef NODE_QUEUE_LIST
+#define NODE_QUEUE_LIST
 template <typename T>
 class Node
 {
 public:
-        T value;
-        Node<T> * next;
+    T data;
+    Node<T> * next;
+
 };
+#endif
 
 
 template<typename T>

@@ -32,7 +32,7 @@ bool queue_list<T>::enQueue(T e) {
     // 入队
     Node<T> *buffer = new Node<T>;
     if (buffer) {
-        buffer->value = e;
+        buffer->data = e;
         this->rear->next = buffer; // 连接
         this->rear = buffer;
         this->size ++; // 队列大小
@@ -48,7 +48,7 @@ template<typename T>
 T queue_list<T>::deQueue() {
     T buffer = -1;
     if (!this->isEmpty()) {
-        buffer = this->front->next->value;
+        buffer = this->front->next->data;
         Node<T> *tamp = this->front;
         this->front = this->front->next; // 指向下一个
         this->size --; // 大小票减少
@@ -67,7 +67,7 @@ int queue_list<T>::getSize() {
 template<typename T>
 T queue_list<T>::getFront() {
     if (!this->isEmpty()) {
-        return this->front->next->value;
+        return this->front->next->data;
     } else {
         std::cout << "队列为空无法拿到数据" << std::endl;
         exit(-1);

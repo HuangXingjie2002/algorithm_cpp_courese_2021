@@ -1,13 +1,17 @@
-#pragma once
+#ifndef STACK_LIST_H
+#define STACK_LIST_H
 
+#ifndef NODE_QUEUE_LIST
+#define NODE_QUEUE_LIST
 template <typename T>
-class Node 
+class Node
 {
-    public:
-        T data;
-        Node<T> * next;
- 
+public:
+    T data;
+    Node<T> * next;
+
 };
+#endif
 
 template <typename T>
 class stack_list
@@ -25,6 +29,7 @@ class stack_list
         bool isEmpty();
 };
 
+#endif
 
 #ifndef STACK_LIST_CPP
 #define STACK_LIST_CPP
