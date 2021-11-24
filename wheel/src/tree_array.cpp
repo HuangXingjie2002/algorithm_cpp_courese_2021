@@ -111,3 +111,95 @@ void tree_array<T>::print(const std::string& methods) {
     }
 }
 
+
+typedef struct treeNode {
+    char value;
+    int left;
+    int right;
+}tNode;
+
+void first(tNode *tree, tNode *ori) {
+
+    std::cout << tree->value;
+    if (tree->left == 0 && tree->right == 0) {
+        // 同为0开始返回
+        return;
+    }
+
+    if (tree->left != 0) {
+        first(&ori[tree->left-1], ori);
+    }
+    if (tree->right != 0) {
+        first(&ori[tree->right-1], ori);
+    }
+}
+
+
+void center(tNode *tree, tNode *ori) {
+
+
+    if (tree->left == 0 && tree->right == 0) {
+        // 同为0开始返回
+        std::cout << tree->value;
+        return;
+    }
+    if (tree->left != 0) {
+        center(&ori[tree->left-1], ori);
+    }
+    std::cout << tree->value;
+    if (tree->right != 0) {
+        center(&ori[tree->right-1], ori);
+    }
+}
+
+void last(tNode *tree, tNode *ori) {
+
+
+    if (tree->left == 0 && tree->right == 0) {
+        // 同为0开始返回
+        std::cout << tree->value;
+        return;
+    }
+    if (tree->left != 0) {
+        last(&ori[tree->left-1], ori);
+    }
+
+    if (tree->right != 0) {
+        last(&ori[tree->right-1], ori);
+    }
+    std::cout << tree->value;
+}
+
+void solve() {
+
+}
+
+
+int pow(int n) {
+    int cycle = 1;
+    for (int i = 0; i < n; i ++) {
+        cycle *= 2;
+    }
+    return cycle;
+}
+
+int find(tNode *tree, tNode * ori, int value, int l, int r, int ID = 1) {
+
+    if (tree->value == value) {
+        return ID;
+    }
+
+    if (tree->left == 0 && tree->right == 0 && tree->value != value) {
+        return 0;
+    }
+
+    if (tree->left != 0) {
+        l = find(&ori[tree->left-1], ori, value,l, r,  ID+1);
+    }
+
+    if (tree->right != 0 && l == 0) {
+        r = find(&ori[tree->right-1], ori, value, l, r, ID+2);
+    }
+
+    return l + r;
+}
