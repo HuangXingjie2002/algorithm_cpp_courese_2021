@@ -1,57 +1,61 @@
 #include <iostream>
 #include <vector>
-#include <map>
-
+#include <cmath>
 using namespace std;
-
-
-
-struct ListNode {
-     int val;
-     ListNode *next;
-     ListNode() : val(0), next(nullptr) {}
-     ListNode(int x) : val(x), next(nullptr) {}
-     ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
 
 
 class Solution {
 public:
-    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        int buffer = 0, sum = 0;
-        ListNode * tamp;
-        ListNode * t = new ListNode(0);
-        tamp = t;
-        int la, lb;
-        while (l1 != nullptr || l2 != nullptr) {
-            la = l1 ? l1->val : 0;
-            lb = l2 ? l2->val : 0;
-            if (buffer != 0)
-                sum = (la + lb + buffer) % 10;
-            else
-                sum = (la + lb) % 10;
-            ListNode * buffer1 = new ListNode(sum);
-            t->next = buffer1;
-            t = t->next;
+    int mod = pow(10, 9) + 7; 
+    int dp[31][1001];   
+    /**
+     * @brief 
+     * 
+     * @param d 骰子的个数
+     * @param f 骰子的点数从 [1, 2, 3, ... , f]
+     * @param target 目标值 
+     * @return int 
+     */
+    int numRollsToTarget(int d, int f, int target) {
+        /**
+         * @brief 
+         *  DP 思路
+         *  在完成第i个的基础上达到target的最大数量。
+         *  return dp[d][target]
+         *  
+         *  dp[i][j] = dp[i-1][j-k] k \in [1, 2, 3, 4, 5, ... , min(f, j - i + 1)]
+         */
+        
+        if (f * d == target) 
+            return 1;
+        if (f * d < target) 
+            return 0;
 
-            buffer = (la + lb) / 10;
-            
-            if (l1 != nullptr) {
-                l1 = l1->next;
-            }
-            if (l2 != nullptr) {
-                l2 = l2->next;
+        for (int i = 1; i <= f; i ++) {
+            dp[1][i] = 1;
+        }
+
+        for (int i = 2; i <= d; i ++) {
+            // 枚举每一个骰子, 投掷
+            // dp[i][j] = dp[i-1][j-k]
+            // 所以说第 i 个骰子的分数k决定了dp更新时加上的种类数
+            // k范围是k <= f
+            for (int j = i; j <= target; j ++) {
+                // 此时至少是i分
+                for (int k = 1; k <= f; k ++) {
+                    if (j <= k)
+                        continue;
+                    dp[i][j] = (dp[i][j] + dp[i-1][j-k]) % mod;
+                }
             }
         }
-        return tamp->next;
+
+        return dp[d][target] % mod;
     }
 };
 
-
 int main() {
-
     Solution sol;
 
-    ListNode * res = sol.addTwoNumbers(vec, 6);
-
+    std::cout << sol.numRollsToTarget(20, 20, 100) << std::endl;
 }
