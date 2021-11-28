@@ -1,61 +1,93 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
+#include <unordered_set>
+#include <unordered_map>
+#include <algorithm>
 using namespace std;
 
 
 class Solution {
 public:
-    int mod = pow(10, 9) + 7; 
-    int dp[31][1001];   
-    /**
-     * @brief 
-     * 
-     * @param d 骰子的个数
-     * @param f 骰子的点数从 [1, 2, 3, ... , f]
-     * @param target 目标值 
-     * @return int 
-     */
-    int numRollsToTarget(int d, int f, int target) {
-        /**
-         * @brief 
-         *  DP 思路
-         *  在完成第i个的基础上达到target的最大数量。
-         *  return dp[d][target]
-         *  
-         *  dp[i][j] = dp[i-1][j-k] k \in [1, 2, 3, 4, 5, ... , min(f, j - i + 1)]
-         */
-        
-        if (f * d == target) 
-            return 1;
-        if (f * d < target) 
-            return 0;
+    int find(vector<int> &vec, int target) {
+        if (target <= vec[0]) return 0;
 
-        for (int i = 1; i <= f; i ++) {
-            dp[1][i] = 1;
+        int lo(0), hi(vec.size()), mid((lo + hi) >> 1);
+
+        while (mid != lo) {
+            if (vec[mid] == target) {
+                return mid - 1;
+            } else if (vec[mid] < target) {
+                lo = mid;
+            } else {
+                hi = mid;
+            }
+            mid = (lo + hi) >> 1;
         }
 
-        for (int i = 2; i <= d; i ++) {
-            // 枚举每一个骰子, 投掷
-            // dp[i][j] = dp[i-1][j-k]
-            // 所以说第 i 个骰子的分数k决定了dp更新时加上的种类数
-            // k范围是k <= f
-            for (int j = i; j <= target; j ++) {
-                // 此时至少是i分
-                for (int k = 1; k <= f; k ++) {
-                    if (j <= k)
-                        continue;
-                    dp[i][j] = (dp[i][j] + dp[i-1][j-k]) % mod;
-                }
+        return hi;
+    }
+
+    int sum(vector<int> &vec,int begin, int length) {
+        int summation = 0;
+        for (int i = 0; i < length; i ++) {
+            summation += vec[i+begin];
+        }
+        return summation;
+    }
+
+    int findBestValue(vector<int>& arr, int target) {
+        // n logn 二分查找 + 区间遍历
+        // 预处理寻找小于等于target的值加入到 vec中求和，并且得到一个长度
+        /*
+        arr数组， target为期望达到的目标值
+        输出value变为何值的时候会出现target
+        1. 排序后得到一个从小到大的矩阵，统计每个区间的个数
+        */
+
+        unordered_map<int, int> map;
+
+        sort(arr.begin(), arr.end());
+
+        for (int i = arr.size() - 1; i >= 0; i --) {
+            if (!map.count(arr[i])) {
+                map[arr[i]] = arr.size() - i;
+            } else {
+                map[arr[i]] ++;
             }
         }
 
-        return dp[d][target] % mod;
+        // 如上得到一个排序好的向量与大于某个值的数。
+
+        int res = target / (arr.size() * 2);
+        // 从res 开始逐渐递增，直到找到一个最小的
+        // 起初的时候肯定是偏小的，直到delta 变正的时候
+        int minA(arr[0]), maxA(arr[arr.size() - 1] > target ? arr[arr.size() - 1] : target);
+
+
+        vector<int> tamp(maxA - minA + 1);
+        for (int i = 0; i < tamp.size(); i ++) {
+            int index = find(arr, i + minA);
+            int summation = sum(arr, 0, index) + map[arr[index]] * (i + minA);
+            tamp[i] = abs(summation - target);
+        }
+
+        return res - 1;
     }
 };
 
-int main() {
-    Solution sol;
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(m, n);
+ * vector<int> param_1 = obj->flip();
+ * obj->reset();
+ */
 
-    std::cout << sol.numRollsToTarget(20, 20, 100) << std::endl;
+int main() {
+   Solution sol;
+   vector<int> res;
+   res.push_back(4);
+   res.push_back(9);
+   res.push_back(3);
+
+   std::cout << sol.findBestValue(res, 10) << std::endl;
 }
