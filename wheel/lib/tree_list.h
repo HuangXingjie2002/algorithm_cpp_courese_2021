@@ -35,6 +35,50 @@ public:
 };
 
 
+typedef struct tree {
+    char value;
+    struct tree *left;
+    struct tree *right;
+} T;
+
+T *createTree(const std::string &first, const std::string &center) {
+    /**
+     * 从先序中取值
+     */
+
+    if (first.length() == 0 || center.length() == 0) {
+        return nullptr;
+    }
+
+    char head = first[0]; // 从先序中取第一个元素
+    int indexInCenter = center.find(head); // 从中序中发现先序头字母出现的位置
+    T * node = new T;
+    node -> value = head;
+
+    std::string centerLeft = center.substr(0, indexInCenter);
+    std::string centerRight = center.substr(indexInCenter + 1, center.length());
+
+    std::string firstLeft = first.substr(1, centerLeft.length());
+    std::string firstRight = first.substr(centerLeft.length() + 1, centerRight.length());
+
+    node->left = createTree(firstLeft, centerLeft);
+    node->right = createTree(firstRight, centerRight);
+
+    return node;
+}
+
+void treeShowAfter(T * tree, std::string &s) {
+    if (tree->left != NULL) {
+        treeShowAfter(tree->left, s);
+    }
+
+    if (tree->right != NULL) {
+        treeShowAfter(tree->right, s);
+    }
+
+    s += tree->value;
+}
+
 #ifndef TREE_LIST_CPP
 #define TREE_LIST_CPP
 #include "../src/binear_tree.cpp"

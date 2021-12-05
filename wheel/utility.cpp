@@ -4,7 +4,7 @@
 
 #include "utility.h"
 #include <iostream>
-
+#include <queue>
 
 
 int64_t fib(int n) {
@@ -73,4 +73,56 @@ int dpLCS(string A, string B) {
         }
     }
     return dp[lengthA%2][lengthB];
+}
+
+//void DFS(vector<vector<int>> &matrix, int &count, vector<int> &visit, int size, int row) {
+//    if (count == size) {
+//        return;
+//    }
+//
+//    for (int i = 0; i < size; i ++) {
+//        if (visit[i] != 1 && matrix[row][i] == 1) {
+//            cout << i << " ";
+//            visit[i] = 1;
+//            count ++;
+//            DFS(matrix, count, visit, size, i);
+//        }
+//    }
+//}
+
+void BFS(vector<vector<int>> &matrix, vector<int> &visit, int size, int row, int &count) {
+    if (count == size) {
+        return;
+    }
+    queue<int> buffer;
+    for (int i = 0; i < size; i ++) {
+        if (visit[i] == 0 && matrix[row][i] == 1) {
+            buffer.push(i);
+        }
+    }
+
+    while (!buffer.empty() && count != size) {
+        int top = buffer.front();
+        buffer.pop();
+        std::cout << top << " ";
+        visit[top] = 1;
+        count ++;
+        BFS(matrix, visit, size, top, count);
+    }
+}
+
+int* range(int begin, int end) {
+    int *array = new int[end - begin];
+
+    for (int i = begin; i < end; i ++) {
+        array[i-begin] = i;
+    }
+    return array;
+}
+
+template <typename T>
+void Swap(T &a, T &b) {
+    T buffer = a;
+    a = b;
+    b = buffer;
 }
