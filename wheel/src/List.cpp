@@ -28,6 +28,7 @@ node<T> *node<T>::insertAsSucc(T e) {
     return newNode;
 }
 
+
 template<typename T>
 List<T>::List() {
     this->header = new node<T>();
@@ -36,6 +37,8 @@ List<T>::List() {
     this->header->succ = this->trailer;
     this->trailer->pred = this->header;
     this->trailer->succ = nullptr;
+    this->sorted = false;
+    this->ascending = true;
     _size = 0; // init size as 0
 }
 
@@ -153,24 +156,24 @@ List<T>::~List() {
 }
 
 template<typename T>
-T List<T>::remove(node<T> *p) {
-    node<T> *oldPtr = p;
+T List<T>::remove(node<T> &p) {
+    node<T> *oldPtr = &p;
+    node<T> *ptr= &p;
     T data = oldPtr->data;
-    p->pred->succ = p->succ;
-    p->succ->pred = p->pred;
+    ptr->pred->succ = ptr->succ;
+    ptr->succ->pred = ptr->pred;
     delete oldPtr;
     _size--;
     return data;
-
 }
 
 template<typename T>
-node<T> *List<T>::firstNode() {
-    return header->succ;
+node<T>& List<T>::firstNode() {
+    return *(header->succ);
 }
 
 template<typename T>
-node<T> *List<T>::lastNode() {
+node<T> List<T>::lastNode() {
     return trailer->pred;
 }
 
@@ -192,7 +195,158 @@ template<typename T>
 template<typename VST>
 void List<T>::traverse(VST &visit) {
     node<T> *head = header;
-    while (trailer != (head = head -> succ)) {
+    while (trailer != (head = head->succ)) {
         visit(head->data);
+    }
+}
+
+
+template <typename T>
+int List<T>::uniquify() {
+    if (_size < 2) return 0;
+
+    int oldSize = _size;
+
+    node<T> *p = firstNode();
+    node<T> *q;
+    while (trailer != ( q = p->succ)) {
+        if (p->data != q->data) {
+            p = q;
+        } else {
+            remove(q);
+        }
+        /**
+         * if q == p, then remove q, and q = p->next
+         * 1. AAABBBCCCCC
+         * 2. AABBBCCCCC
+         * 3. ABBBCCCCC
+         * 4. ABBCCCCC
+         * 5. ABCCCCC
+         * 6. ABCCCC
+         * 7. ABCCC
+         * 8. ABCC
+         * 9. ABC
+         * 10. break;
+         */
+    }
+    return oldSize - _size;
+}
+
+template<typename T>
+node<T>& List<T>::search(const T &e, int n, node<T> *p, bool ascend) {
+    /**
+     * true pred!!!!!
+     * do not include e node;
+     */
+    while ( 0 < n -- ) {
+        if (ascend) {
+            if (((p = p->pred)->data) <= e) break;
+        } else {
+            if (((p = p->pred)->data) >= e) break;
+        }
+    }
+    return *p;
+}
+
+
+
+template<typename T>
+node<T>& List<T>::selectMax(node<T> &p, int n) {
+    // 从当前节点的后n个节点中查找一个最大的节点并返回
+    node<T> *ans = (&p)->succ;
+    node<T> *iter = (&p)->succ;
+    while (n --) {
+        if (ans->data <= iter->data) {
+            ans = iter;
+        }
+        iter = iter->succ; // iteration
+    }
+    return *ans; // return reference of max node
+}
+
+template<typename T>
+List<T>::List(std::initializer_list<T> li) : List() {
+    auto iter = li.begin();
+    while (iter != li.end()) {
+        insertAsLast(*iter);
+        iter ++;
+    }
+}
+
+
+
+template<typename T>
+void List<T>::sort(bool ascend) {
+//    selectSort(*(header->succ), _size, ascend);
+    insertSort(*(header->succ), _size, ascend);
+    this->sorted = true;
+    ascending = ascend;
+}
+
+template<typename T>
+void List<T>::sortedInsert(T data) {
+    if (this->sorted) {
+        if (ascending) {
+            node<T> *ptr = header;
+
+            while ((ptr = ptr->succ)->data <= data);
+
+            insertBefore(ptr, data);
+        } else {
+            node<T> *ptr = header;
+
+            while ((ptr = ptr->succ)->data >= data);
+
+            insertBefore(ptr, data);
+        }
+    } else {
+        insertAsFirst(data);
+    }
+}
+
+template<typename T>
+void List<T>::selectSort(node<T> &begin, int n, bool ascend) {
+    /**
+     * begin from n
+     */
+    node<T> *head = (&begin)->pred;
+    node<T> *tail = &begin;
+
+    for (int i = 0; i < n; i++) {
+        tail = tail->succ;
+    }
+    if (ascend) {
+        while (1 < n) {
+            /**
+             * @file 获取最大值的地址，并且通过remove删除元素，把值赋值回来，通过insertBefore 创建一个新的节点插入。
+             */
+            insertBefore(tail, remove(selectMax(*head, n)));
+            tail = tail->pred;
+            n --;
+        }
+    } else {
+        // in another way, we can begin form head
+        while (1 < n) {
+            insertAfter(head, remove(selectMax(*head, n)));
+            head = head->succ;
+            n --;
+        }
+        // it will become a reverse list compare with ascending sort form list
+    }
+}
+
+template<typename T>
+void List<T>::insertSort(node<T> &begin, int n, bool ascend) {
+    /**
+     * search for node<T> *ptr position;
+     */
+
+    node<T> *povit = (&begin);
+    int N = n;
+    node<T> *head = firstNode().pred;
+    while (n -- > 0) {
+        node<T> *p = &search(povit->data,  N - n, povit, ascend);
+        insertAfter(p, remove(*povit));
+        povit = povit->succ;
     }
 }

@@ -8,10 +8,20 @@
 #include "./lib/Log.h"
 using namespace std;
 
-template <typename T>
 class utility {
+public:
+    static double to_double(const string &number);
 
+    static double pow(double a, int b) {
+        if (b == 0) return 1;
+        double basea = a;
+        while (b-- > 1) {
+            a *= basea;
+        }
+        return a;
+    }
 };
+
 
 
 /**

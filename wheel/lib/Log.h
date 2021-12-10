@@ -12,7 +12,7 @@ class Log
 {
 private:
 	int m_logLevel = 2;
-	std::chrono::high_resolution_clock::time_point clockInit;
+	std::chrono::steady_clock::time_point clockInit;
 
 public:
 	static const int logLevelInfo = 2;

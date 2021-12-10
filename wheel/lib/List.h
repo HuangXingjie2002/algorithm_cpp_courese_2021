@@ -19,6 +19,7 @@ public:
     node<T> *insertAsPred(T e);
 
     node<T> *insertAsSucc(T e);
+
 };
 
 
@@ -31,6 +32,12 @@ protected:
     node<T> *first;
     node<T> *last;
     int _size;
+    bool sorted;
+    bool ascending;
+
+    void selectSort(node<T> &begin, int n, bool ascending = true);
+    void insertSort(node<T> &begin, int n, bool ascending = true);
+
 public:
     List();
 
@@ -39,6 +46,8 @@ public:
     List(List<T> &list, int begin, int end);
 
     List(T *datas, int n);
+
+    List(std::initializer_list<T> li);
 
     virtual ~List();
 
@@ -60,16 +69,26 @@ public:
 
     int size() {return _size;}
 
-    T remove(node<T> *p);
+    T remove(node<T> &p);
 
-    node<T>* firstNode();
+    node<T>& firstNode();
 
-    node<T>* lastNode();
+    node<T> lastNode();
 
     int deduplicate();
 
     template <typename VST>
     void traverse(VST &visit);
+
+    int uniquify();
+
+    node<T>& search(T const & e, int n, node<T> *p, bool ascend = true);
+
+    node<T>& selectMax(node<T> &p, int n);
+
+    void sort( bool ascend = true);
+
+    void sortedInsert(T data);
 };
 
 

@@ -126,3 +126,26 @@ void Swap(T &a, T &b) {
     a = b;
     b = buffer;
 }
+
+double utility::to_double(const string &number) {
+    int dotPosition = number.find('.');
+    int length = number.length();
+    if (number == "+") return 1;
+    if (number == "-") return -1;
+    double povit;
+    if (dotPosition == -1) {
+        povit = 1;
+    } else {
+        povit = double(1) / utility::pow(10, length - dotPosition - 1);
+    }
+    double res = 0;
+    for (int i = length - 1; i >= 0; --i) {
+        if (number[i] == '.' || number[i] == '+') continue;
+        if (number[i] == '-') res = -res;
+        else {
+            res += povit * (number[i] - '0');
+            povit *= 10;
+        }
+    }
+    return res;
+}

@@ -24,7 +24,10 @@ public:
     explicit Bitmap(MapSize size = 64);
 
     bool test(int k);
-
+    /**
+     * @param k
+     * @return wheather k exist
+     */
     void set(int k);
 
     void clear(int k);

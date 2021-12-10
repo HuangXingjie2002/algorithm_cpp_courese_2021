@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Log.h"
+#include "../lib/Log.h"
 #include <ctime>
 #include <sstream>
 #include <chrono>
@@ -92,7 +92,7 @@ string Log::currTime()
 void Log::clockStart()
 {
 	int m_logLevelBak = m_logLevel;
-	clockInit = std::chrono::high_resolution_clock::now();
+	clockInit = std::chrono::steady_clock::now();
 	m_logLevel = INFO;
 	Log::Info("start timing");
 	m_logLevel = m_logLevel;
@@ -105,7 +105,7 @@ void Log::clockStop()
 	using std::stringstream;
 	// 复制一份logLevel的副本用于复原m_logLevel
 	int m_logLevelBak = m_logLevel;
-	std::chrono::high_resolution_clock::time_point clockEnd = std::chrono::high_resolution_clock::now();
+	std::chrono::steady_clock::time_point clockEnd = std::chrono::steady_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(clockEnd - clockInit);
 	stringstream fmt;
 	fmt << "Total use: "
